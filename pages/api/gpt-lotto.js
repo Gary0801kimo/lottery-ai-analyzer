@@ -9,7 +9,15 @@ const openai = new OpenAI({
 async function fetchTaiwanLottoData() {
   return new Promise((resolve, reject) => {
     let html = "";
-    https.get("https://www.taiwanlottery.com.tw/lotto/lotto649/history.aspx", (res) => {
+    const options = {
+      hostname: "www.taiwanlottery.com.tw",
+      path: "/lotto/lotto649/history.aspx",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      },
+    };
+
+    https.get(options, (res) => {
       res.on("data", (chunk) => (html += chunk));
       res.on("end", () => {
         const $ = cheerio.load(html);

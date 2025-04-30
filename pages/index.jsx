@@ -25,13 +25,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-blue-100 to-green-100">
-      <div className="max-w-5xl mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
+    <div className="min-h-screen p-6 bg-gradient-to-b from-sky-200 to-green-300">
+      <div className="max-w-5xl mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-2">
         <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h2 className="text-xl font-semibold mb-2">大樂透預測</h2>
+          <h2 className="text-xl font-bold mb-2">🎯 大樂透預測</h2>
           <div className="flex flex-wrap gap-2">
-            {lotto.map((num, idx) => (
-              <span key={idx} className="bg-yellow-300 rounded-full px-4 py-2 font-bold text-lg shadow">
+            {lotto.map((num, i) => (
+              <span key={i} className="bg-yellow-300 px-4 py-2 rounded-full text-lg font-bold shadow">
                 {num}
               </span>
             ))}
@@ -39,10 +39,10 @@ export default function Home() {
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h2 className="text-xl font-semibold mb-2">威力彩預測</h2>
+          <h2 className="text-xl font-bold mb-2">💥 威力彩預測</h2>
           <div className="flex flex-wrap gap-2">
-            {winLotto.map((num, idx) => (
-              <span key={idx} className="bg-pink-300 rounded-full px-4 py-2 font-bold text-lg shadow">
+            {winLotto.map((num, i) => (
+              <span key={i} className="bg-pink-300 px-4 py-2 rounded-full text-lg font-bold shadow">
                 {num}
               </span>
             ))}
@@ -50,24 +50,24 @@ export default function Home() {
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-md col-span-2">
-          <h2 className="text-xl font-semibold mb-2">運彩推薦</h2>
+          <h2 className="text-xl font-bold mb-2">📣 運彩推薦</h2>
           <ul className="list-disc list-inside">
             {sports.map((item, idx) => (
-              <li key={idx} className="text-base">{item}</li>
+              <li key={idx}>{item}</li>
             ))}
           </ul>
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-md col-span-2">
-          <h2 className="text-xl font-semibold mb-2">🎯 今日金句</h2>
-          <p className="italic text-lg text-gray-800">「{quote}」</p>
+          <h2 className="text-xl font-bold mb-2">🌟 今日金句</h2>
+          <p className="italic text-lg text-gray-700">「{quote}」</p>
         </div>
       </div>
 
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-8">
         <button
           onClick={fetchData}
-          className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full text-xl shadow-md transition-all"
+          className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full text-xl shadow-lg transition"
         >
           再預測一次 🎲
         </button>
