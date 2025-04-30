@@ -36,13 +36,6 @@ export default function Home() {
     }
   };
 
-  const exportPDF = async () => {
-    if (typeof window !== 'undefined') {
-      const html2pdf = (await import("html2pdf.js")).default;
-      html2pdf().from(chartRef.current).save("lotto-report.pdf");
-    }
-  };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -86,18 +79,12 @@ export default function Home() {
         <Bar data={chartData} options={{ responsive: true }} />
       </div>
 
-      <div className="flex justify-center mt-10 gap-4">
+      <div className="flex justify-center mt-10">
         <button
           onClick={fetchData}
           className="bg-yellow-300 hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-full text-xl shadow-md transition-all"
         >
           再算一次（好運來）
-        </button>
-        <button
-          onClick={exportPDF}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-xl shadow-md transition-all"
-        >
-          匯出 PDF
         </button>
       </div>
     </div>
