@@ -80,7 +80,7 @@ export default function Home() {
         <Card
           title="今日金句"
           icon="🌟"
-          content={<p className="text-xl italic text-gray-800">「{quote || "請先點擊預測一次」」</p>}
+          content={<p className="text-xl italic text-gray-800">「{quote || "請先點擊預測一次"}」</p>}
         />
       </div>
 
