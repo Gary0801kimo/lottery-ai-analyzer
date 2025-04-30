@@ -56,7 +56,7 @@ export default function Home() {
 
         <div className="bg-white p-5 rounded-2xl shadow-md col-span-2">
           <h3 className="text-xl font-bold mb-2">🌟 今日金句</h3>
-          <p className="text-lg text-gray-700 italic">「{quote || "請先點擊預測」」</p>
+          <p className="text-lg text-gray-700 italic">「{quote || "請先點擊預測"}」</p>
         </div>
       </div>
 
