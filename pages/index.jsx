@@ -37,8 +37,10 @@ export default function Home() {
   };
 
   const exportPDF = async () => {
-    const html2pdf = (await import("html2pdf.js")).default;
-    html2pdf().from(chartRef.current).save("lotto-report.pdf");
+    if (typeof window !== 'undefined') {
+      const html2pdf = (await import("html2pdf.js")).default;
+      html2pdf().from(chartRef.current).save("lotto-report.pdf");
+    }
   };
 
   useEffect(() => {
