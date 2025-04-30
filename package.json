@@ -1,6 +1,6 @@
 
 {
-  "name": "lottery-ai-analyzer",
+  "name": "lottery-ai-analyzer-v2",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
