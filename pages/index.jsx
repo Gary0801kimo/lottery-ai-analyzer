@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import WeeklyZodiac from "./components/WeeklyZodiac";
 
 export default function Home() {
   const [lotto, setLotto] = useState([]);
@@ -66,7 +67,7 @@ export default function Home() {
           <h3 className="text-2xl font-bold mb-2">📅 每週運勢</h3>
           <pre className="whitespace-pre-wrap text-gray-800 text-lg">{weekly || "請先預測一次以取得本週建議"}</pre>
         </div>
-      </div>
+            <WeeklyZodiac /></div>
 
       <div className="text-center mt-10">
         <button
