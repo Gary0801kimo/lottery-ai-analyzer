@@ -1,44 +1,36 @@
 import { OpenAI } from "openai";
 import cheerio from "cheerio";
-import https from "https";
+import fetch from "node-fetch";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY,
 });
 
 async function fetchTaiwanLottoData() {
-  return new Promise((resolve, reject) => {
-    let html = "";
-    const options = {
-      hostname: "www.taiwanlottery.com.tw",
-      path: "/lotto/lotto649/history.aspx",
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      },
-    };
-
-    https.get(options, (res) => {
-      res.on("data", (chunk) => (html += chunk));
-      res.on("end", () => {
-        const $ = cheerio.load(html);
-        const results = [];
-
-        $("table.table_org tr").each((_, row) => {
-          const cells = $(row).find("td");
-          if (cells.length >= 8) {
-            const numbers = [];
-            for (let i = 1; i <= 6; i++) {
-              const num = $(cells[i]).text().trim();
-              if (num) numbers.push(num);
-            }
-            if (numbers.length === 6) results.push(numbers);
-          }
-        });
-
-        resolve(results.slice(0, 500)); // 取前 500 筆
-      });
-    }).on("error", reject);
+  const res = await fetch("https://www.taiwanlottery.com.tw/lotto/lotto649/history.aspx", {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "Accept-Encoding": "gzip",
+    },
   });
+
+  const html = await res.text();
+  const $ = cheerio.load(html);
+  const results = [];
+
+  $("table.table_org tr").each((_, row) => {
+    const cells = $(row).find("td");
+    if (cells.length >= 8) {
+      const numbers = [];
+      for (let i = 1; i <= 6; i++) {
+        const num = $(cells[i]).text().trim();
+        if (num) numbers.push(num);
+      }
+      if (numbers.length === 6) results.push(numbers);
+    }
+  });
+
+  return results.slice(0, 500);
 }
 
 export default async function handler(req, res) {
@@ -73,7 +65,7 @@ ${inputText}
       quote,
     });
   } catch (error) {
-    console.error("GPT 實際資料分析失敗：", error);
+    console.error("GPT 分析失敗：", error);
     res.status(500).json({ error: "GPT 分析失敗", details: error.message });
   }
 }
