@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import WeeklyZodiac from "./components/WeeklyZodiac";
+
 
 export default function Home() {
   const [lotto, setLotto] = useState([]);
@@ -46,8 +46,8 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 to-green-200 p-6">
-      <div className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 xl:grid-cols-2">
+    <div className="min-h-screen bg-gradient-to-b from-sky-200 to-green-200 p-6 [column-fill:_balance] sm:columns-1 md:columns-2 xl:columns-3 space-y-6">
+      <div className="space-y-6 [break-inside:avoid]">
         <Card title="🎯 大樂透預測" items={lotto} />
         <Card title="💥 威力彩預測" items={winLotto} />
 
@@ -67,7 +67,7 @@ export default function Home() {
           <h3 className="text-2xl font-bold mb-2">📅 每週運勢</h3>
           <pre className="whitespace-pre-wrap text-gray-800 text-lg">{weekly || "請先預測一次以取得本週建議"}</pre>
         </div>
-            <WeeklyZodiac /></div>
+            </div>
 
       <div className="text-center mt-10">
         <button
