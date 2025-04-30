@@ -27,7 +27,7 @@ export default function Home() {
   };
 
   const Ball = ({ num }) => (
-    <div className="w-14 h-14 rounded-full bg-white text-xl font-bold shadow flex items-center justify-center border-2 border-yellow-500">
+    <div className="w-16 h-16 rounded-full bg-white text-2xl font-bold shadow flex items-center justify-center border-2 border-yellow-500">
       {num || "🎲"}
     </div>
   );
@@ -35,8 +35,10 @@ export default function Home() {
   const Card = ({ title, items }) => (
     <div className="bg-white p-5 rounded-2xl shadow-md text-center">
       <h3 className="text-xl font-bold mb-4">{title}</h3>
-      <div className="flex justify-center flex-wrap gap-3">
-        {items.length > 0 ? items.map((n, i) => <Ball key={i} num={n} />) : Array.from({ length: 6 }).map((_, i) => <Ball key={i} num={""} />)}
+      <div className="flex justify-center gap-4 flex-wrap">
+        {items.length > 0
+          ? items.map((n, i) => <Ball key={i} num={n} />)
+          : Array.from({ length: 6 }).map((_, i) => <Ball key={i} num={""} />)}
       </div>
     </div>
   );
@@ -50,7 +52,11 @@ export default function Home() {
         <div className="bg-white p-5 rounded-2xl shadow-md col-span-2">
           <h3 className="text-xl font-bold mb-2">🏀 NBA 運彩推薦</h3>
           <ul className="list-disc list-inside text-gray-800 space-y-1">
-            {sports.map((s, i) => <li key={i}>{s}</li>)}
+            {sports.length > 0 ? (
+              sports.map((s, i) => <li key={i}>{s}</li>)
+            ) : (
+              <li>請點擊下方按鈕預測今日對戰！</li>
+            )}
           </ul>
         </div>
 
