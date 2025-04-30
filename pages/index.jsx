@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
-import html2pdf from "html2pdf.js";
 import {
   Chart as ChartJS,
   BarElement,
