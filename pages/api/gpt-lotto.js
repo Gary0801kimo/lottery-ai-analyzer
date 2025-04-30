@@ -1,49 +1,23 @@
 import { OpenAI } from "openai";
-import cheerio from "cheerio";
-import fetch from "node-fetch";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY,
 });
 
-async function fetchTaiwanLottoData() {
-  const res = await fetch("https://www.taiwanlottery.com.tw/lotto/lotto649/history.aspx", {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      "Accept-Encoding": "gzip",
-    },
-  });
-
-  const html = await res.text();
-  const $ = cheerio.load(html);
-  const results = [];
-
-  $("table.table_org tr").each((_, row) => {
-    const cells = $(row).find("td");
-    if (cells.length >= 8) {
-      const numbers = [];
-      for (let i = 1; i <= 6; i++) {
-        const num = $(cells[i]).text().trim();
-        if (num) numbers.push(num);
-      }
-      if (numbers.length === 6) results.push(numbers);
-    }
-  });
-
-  return results.slice(0, 500);
-}
-
 export default async function handler(req, res) {
   try {
-    const realData = await fetchTaiwanLottoData();
-    const inputText = realData.map(r => r.join(", ")).join("\n");
+    const today = new Date().toLocaleDateString("zh-TW", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
 
     const prompt = `
-以下是台灣大樂透最近 500 期的開獎號碼紀錄，請你基於數據趨勢預測下一期號碼（6 個不重複號碼，範圍 1～49），並附上一句金句鼓勵玩家。
-
-號碼紀錄：
-${inputText}
-`;
+今天是 2025年04月30日（星期二），請你參考紫微斗數、天干地支、五行旺衰，分析今日運勢並預測一組大樂透號碼（6 個 1～49 間不重複的幸運數字），並提供一句對應今日運勢的專屬幸運金句。
+格式如下：
+號碼：xx, xx, xx, xx, xx, xx
+金句：「......」`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -52,20 +26,18 @@ ${inputText}
     });
 
     const reply = response.choices?.[0]?.message?.content || "";
-
     const numberMatch = reply.match(/[0-9]{1,2}/g) || [];
     const uniqueNumbers = [...new Set(numberMatch)].slice(0, 6);
-
     const quoteMatch = reply.match(/["「](.+?)["」]/);
-    const quote = quoteMatch ? quoteMatch[1] : "祝你好運，中大獎！";
+    const quote = quoteMatch ? quoteMatch[1] : "今日財氣流動，貴人隱現。";
 
     res.status(200).json({
       lotto: uniqueNumbers,
       winLotto: [],
       quote,
     });
-  } catch (error) {
-    console.error("GPT 分析失敗：", error);
-    res.status(500).json({ error: "GPT 分析失敗", details: error.message });
+  } catch (err) {
+    console.error("GPT 分析失敗：", err);
+    res.status(500).json({ error: "GPT 分析失敗", details: err.message });
   }
 }
